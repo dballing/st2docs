@@ -31,12 +31,23 @@ RHEL / CentOS:
 
    sudo yum update $PKG_NAME
 
-4. Run Mistral database migration scripts:
+4. Upgrade Mistral database.
 
 .. sourcecode:: bash
 
+  # Stop related services
+  service mistral-api stop
+  service mistral stop
+  service postgresql stop
+
+  # Upgrade database
   /opt/stackstorm/mistral/bin/mistral-db-manage --config-file /etc/mistral/mistral.conf upgrade head
   /opt/stackstorm/mistral/bin/mistral-db-manage --config-file /etc/mistral/mistral.conf populate
+
+  # Restart related services
+  service postgresql start
+  service mistral start
+  service mistral-api start
 
 5. Start |st2| services.
 
